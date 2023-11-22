@@ -1,0 +1,52 @@
+{"properties": [
+  {
+    "name": "management.endpoints.web.cors.allowed-origins",
+    "type": "java.lang.String",
+    "description": "A description for 'management.endpoints.web.cors.allowed-origins'"
+  },
+  {
+    "name": "management.endpoints.web.cors.allowed-methods",
+    "type": "java.lang.String",
+    "description": "A description for 'management.endpoints.web.cors.allowed-methods'"
+  },
+  {
+    "name": "app.api.swagger.enable",
+    "type": "java.lang.String",
+    "description": "A description for 'app.api.swagger.enable'"
+  },
+  {
+    "name": "management.security.enabled",
+    "type": "java.lang.String",
+    "description": "A description for 'management.security.enabled'"
+  },
+  {
+    "name": "spring.http.multipart.enabled",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.http.multipart.enabled'"
+  },
+  {
+    "name": "spring.servlet.maltipart.enable",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.servlet.maltipart.enable'"
+  },
+  {
+    "name": "hibernate.cache.auto_evict_collection_cache",
+    "type": "java.lang.String",
+    "description": "A description for 'hibernate.cache.auto_evict_collection_cache'"
+  },
+  {
+    "name": "EcommarceApi.app.jwtSecret",
+    "type": "java.lang.String",
+    "description": "A description for 'EcommarceApi.app.jwtSecret'"
+  },
+  {
+    "name": "EcommarceApi.app.jwtExpirationMs",
+    "type": "java.lang.String",
+    "description": "A description for 'EcommarceApi.app.jwtExpirationMs'"
+  },
+  {
+    "name": "log4j.logger.org.springframework",
+    "type": "java.lang.String",
+    "description": "A description for 'log4j.logger.org.springframework'"
+  }
+]}
