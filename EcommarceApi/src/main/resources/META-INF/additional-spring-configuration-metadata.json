@@ -73,5 +73,30 @@
     "name": "spring.datasource.driver-Class-Name",
     "type": "java.lang.String",
     "description": "A description for 'spring.datasource.driver-Class-Name'"
+  },
+  {
+    "name": "EcommarceApi.app.jwtExpirationMs",
+    "type": "java.lang.String",
+    "description": "A description for 'EcommarceApi.app.jwtExpirationMs'"
+  }
+]}{
+    "name": "EcommarceApi.app.jwtSecret",
+    "type": "java.lang.String",
+    "description": "A description for 'EcommarceApi.app.jwtSecret'"
+  }
+]}{
+    "name": "spring.http.multipart.enabled",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.http.multipart.enabled'"
+  }
+]}{
+    "name": "spring.servlet.maltipart.enable",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.servlet.maltipart.enable'"
+  }
+]}{
+    "name": "spring.servlet.maltipart.enable",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.servlet.maltipart.enable'"
   }
 ]}

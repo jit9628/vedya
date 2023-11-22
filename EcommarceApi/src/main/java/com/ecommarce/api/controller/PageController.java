@@ -1,5 +1,6 @@
 package com.ecommarce.api.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,9 +11,13 @@ import java.util.TreeSet;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -274,21 +279,20 @@ public class PageController {
 	}
 
 	@GetMapping("CategoryWiseProduct/{catid}")
-	public ModelAndView getCategoryWiseProduct(@PathVariable("catid") long catid, ModelAndView MV,HttpServletRequest request) {
-	
+	public ModelAndView getCategoryWiseProduct(@PathVariable("catid") long catid, ModelAndView MV,
+			HttpServletRequest request) {
+
 		if (request.getSession().getAttribute("userid") != null) {
 			Long attribute = (Long) request.getSession().getAttribute("userid");
 			// Long attribute = (Long)request.getAttribute("userid");
 			int countAddToCartProductBasedOnUser = this.addToCartService.countAddToCartProductBasedOnUser(attribute);
 			MV.addObject("countAddToCartProductBasedOnUser", countAddToCartProductBasedOnUser);
 		}
-		
+
 		Optional<Category> searchCategoryById = categoryService.searchCategoryById(catid);
 		Category category = searchCategoryById.get();
 		Set<Product> productlist = category.getProduct();
-		
-		
-		
+
 		List<Product> CategoryDatalist = new ArrayList<>();
 		String filesName = "";
 		String files = "";
@@ -335,16 +339,15 @@ public class PageController {
 //				 return mv;
 //			}
 			String chekRole = checkAuthenticateUser.chekRole();
-			if(chekRole==null ) {
-				 mv.setViewName("redirect:/api/page/LogIn");
-				 return mv;
+			if (chekRole == null) {
+				mv.setViewName("redirect:/api/page/LogIn");
+				return mv;
 			}
-			if(chekRole!="admin")
-			{
-				 mv.setViewName("redirect:/api/page/LogIn");
-				 return mv;
+			if (chekRole != "admin") {
+				mv.setViewName("redirect:/api/page/LogIn");
+				return mv;
 			}
-			
+
 			log.info("query string value is " + request.getParameter("msg"));
 			List<Category> allCategory = categoryService.getAllCategory();
 			mv.addObject("categorydatavalue", allCategory);
@@ -449,12 +452,12 @@ public class PageController {
 	}
 
 	@GetMapping("Product-dtl-usr")
-	public ModelAndView getProductDetailsPageUser(ModelAndView mv,HttpServletRequest request) {
-		
+	public ModelAndView getProductDetailsPageUser(ModelAndView mv, HttpServletRequest request) {
+
 		if (request.getSession().getAttribute("userid") != null) {
 			Long attribute = (Long) request.getSession().getAttribute("userid");
 			// Long attribute = (Long)request.getAttribute("userid");
-		int	countAddToCartProductBasedOnUser = this.addToCartService.countAddToCartProductBasedOnUser(attribute);
+			int countAddToCartProductBasedOnUser = this.addToCartService.countAddToCartProductBasedOnUser(attribute);
 			mv.addObject("countAddToCartProductBasedOnUser", countAddToCartProductBasedOnUser);
 		}
 		mv.setViewName("shop");
@@ -465,7 +468,7 @@ public class PageController {
 	@SuppressWarnings({ "unused", "null" })
 	@GetMapping("Product-dtls")
 	public ResponseEntity<?> getProductDetailsPages(HttpServletRequest request) {
-		
+
 		Map<String, Object> body = new HashMap<>();
 		List<Product> allProduct = null;
 		List<ProductDto> listOfObject = null;
@@ -497,8 +500,7 @@ public class PageController {
 			body.put("CategoryDatalist", CategoryDatalist);
 			body.put("countAddToCartProductBasedOnUser", countAddToCartProductBasedOnUser);
 			return new ResponseEntity<>(body, HttpStatus.OK);
-		}
-		catch (NullPointerException e) {
+		} catch (NullPointerException e) {
 			log.info("Execute Null Pointer Exception");
 			List<Category> allcategories = null;
 			allcategories = categoryService.getAllCategory();
@@ -567,7 +569,8 @@ public class PageController {
 	/*---------------------------------------   product based on specific product id and category matchig products---------------- */
 
 	@GetMapping("product-details/{pid}")
-	public ModelAndView getSpecificProductDetails(@PathVariable("pid") int no, ModelAndView mv,HttpServletRequest request) {
+	public ModelAndView getSpecificProductDetails(@PathVariable("pid") int no, ModelAndView mv,
+			HttpServletRequest request) {
 		if (request.getSession().getAttribute("userid") != null) {
 			Long attribute = (Long) request.getSession().getAttribute("userid");
 			// Long attribute = (Long)request.getAttribute("userid");
@@ -805,17 +808,15 @@ public class PageController {
 //			 mv.setViewName("redirect:/api/page/LogIn");
 //			 return mv;
 //		}
-		
+
 		String chekRole = checkAuthenticateUser.chekRole();
-		System.out.println("CHECK ROLE IS .. "+chekRole);
-		if(chekRole==null || chekRole!="admin")
-		{
-			 mv.setViewName("redirect:/api/page/LogIn");
-			 return mv;
+		System.out.println("CHECK ROLE IS .. " + chekRole);
+		if (chekRole == null || chekRole != "admin") {
+			mv.setViewName("redirect:/api/page/LogIn");
+			return mv;
 		}
-		
-		
-		System.out.println("Check Role .."+chekRole);
+
+		System.out.println("Check Role .." + chekRole);
 		mv.addObject("msg", request.getParameter("msg"));
 		log.debug("status message is ::" + request.getParameter("msg"));
 		mv.setViewName("Admin/Add-Category");
@@ -829,7 +830,7 @@ public class PageController {
 		List<ProductDto> listOfObject = new ArrayList<>();
 		try {
 			// allproducts are
-			
+
 			List<Product> allProduct = productService.getAllProduct();
 
 			String files = "";
@@ -851,6 +852,7 @@ public class PageController {
 		}
 		return listOfObject;
 	}
+
 	@GetMapping("/productproperty/{id}")
 	public ModelAndView productproperty(@PathVariable("id") int id, ModelAndView mv) {
 
@@ -866,7 +868,7 @@ public class PageController {
 	}
 
 	@GetMapping("about")
-	public ModelAndView getAbout(ModelAndView mv ,HttpServletRequest request) {
+	public ModelAndView getAbout(ModelAndView mv, HttpServletRequest request) {
 		if (request.getSession().getAttribute("userid") != null) {
 			Long attribute = (Long) request.getSession().getAttribute("userid");
 			// Long attribute = (Long)request.getAttribute("userid");
@@ -894,10 +896,9 @@ public class PageController {
 	@GetMapping("AllCategories")
 	public ModelAndView getAllCategories(ModelAndView mv) {
 		String chekRole = checkAuthenticateUser.chekRole();
-		if(chekRole!=null && chekRole!="admin")
-		{
-			 mv.setViewName("redirect:/api/page/LogIn");
-			 return mv;
+		if (chekRole != null && chekRole != "admin") {
+			mv.setViewName("redirect:/api/page/LogIn");
+			return mv;
 		}
 		List<Category> allcategories = null;
 		allcategories = categoryService.getAllCategory();
@@ -1021,7 +1022,7 @@ public class PageController {
 		return mv;
 
 	}
-	
+
 	@GetMapping("order-delivered-details")
 	public ModelAndView getOderDeliveredDetailsProduct(ModelAndView mv) {
 		mv.setViewName("Admin/orderdelevereddetails");
@@ -1064,11 +1065,31 @@ public class PageController {
 		 */
 	}
 
-
 	@GetMapping("contacts")
 	public ModelAndView getContact(ModelAndView view) {
 		view.setViewName("contactus");
 		return view;
+	}
+	@GetMapping("exportToExcel")
+	public String exportToExcel(HttpServletResponse response) throws IOException {
+		// List<RoomBook> findAll = this.bookRepository.findAll();// get the record from
+		// db table
+		HSSFWorkbook workbook = new HSSFWorkbook(); // create workbook
+		HSSFSheet createSheet = workbook.createSheet("Detail Report");// sheet created
+		HSSFRow createRow = createSheet.createRow(0);// created row
+		createRow.createCell(0).setCellValue("Name");// create header cell inside row
+		createRow.createCell(1).setCellValue("Email");// create header cell inside row
+		int dataRowIndex = 0;
+		HSSFRow dataRow = createSheet.createRow(dataRowIndex);
+		dataRow.createCell(0).setCellValue("jitendra Shukla");
+		dataRow.createCell(1).setCellValue("softwaree831@gmail.com");
+		dataRowIndex++;
+		ServletOutputStream outputStream = response.getOutputStream();
+		workbook.write(outputStream);
+		workbook.close();
+		outputStream.close();
+		return "jitendra Shukla";
+
 	}
 
 }

@@ -1,8 +1,19 @@
 package com.ecommarce.api.utility;
 
+import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.stereotype.Component;
+
+import com.example.springbootcrud.entity.RoomBook;
+
 
 //Java program generate a random AlphaNumeric String
 //using Math.random() method
@@ -69,8 +80,17 @@ public   String generateToken() {
 			.append(UUID.randomUUID().toString()).toString();
 }
 
+
+
+
+
+
+
+
+
 public static void main(String[] args)
 {
+	
 
 //Get the size n
 int n = 20;
@@ -80,4 +100,5 @@ System.out.println(RandomStringValue
 	.getRandomNumber());
 
 }
+       
 }

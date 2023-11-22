@@ -115,7 +115,7 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
 						"/api/test//deleteproduct/**", "/api/test/deleteproduct/**", "/api/test/update-product/**",
 						"/api/test/update-product/**", "/api/page/All-Products","/api/page/contacts", "/api/test/product/**","/api/test/getProductByCategorId/**","/api/page/Product-dtls","/api/page/searchdata","/api/page/Product-dtl-usr","/api/user/cancelorder/**","/api/usr/filterPrice/**"
 						,"/api/test/ProductUpdate", "/api/test/remodeproductfromcart/**", "/api/test/jitu",
-						"/api/test/check-out", "/api/test/categoryLists", "/api/test/search-product/**", "/api/user/bookproduct/**","/api/user/getintouch","/api/user/touch","/api/test/addtocartproducts/**","/api/page/indexpage-Product-dtls")
+						"/api/test/check-out", "/api/test/categoryLists", "/api/test/search-product/**", "/api/user/bookproduct/**","/api/user/getintouch","/api/user/touch","/api/test/addtocartproducts/**","/api/page/indexpage-Product-dtls","/api/page/exportToExcel")
 				.permitAll()
 				// .hasRole("ADMIN")
 				.antMatchers("/api/admin/order-listdata").permitAll()

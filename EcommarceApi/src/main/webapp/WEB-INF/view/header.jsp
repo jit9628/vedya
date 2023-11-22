@@ -287,7 +287,7 @@
 							</div>
 						</div>
 						<button type="button" class="btn-close" data-bs-dismiss="modal"
-							aria-label="Close"></button>
+							aria-label="Close" id="search-cross"></button>
 					</div>
 					
 					<div class="modal-body d-none">
@@ -308,9 +308,14 @@
 
 
 	<script type="text/javascript">
-
+const productsContainer = document.querySelector(".productsdetails");
  $("#searchproducts1").on("keyup",function(){
  	var keyword = $(this).val();
+	//alert(keyword);
+	if(keyword==""){
+		//alert(keyword);	
+		productsContainer.innerHTML = "<p>No Products Available</p>";
+	}
  	$.ajax({
  		url: '/api/test/search-product/' + keyword,
  		type: 'GET',
@@ -324,9 +329,10 @@
  	});
  	
  });
- const productsContainer = document.querySelector(".productsdetails");
+ //const productsContainer = document.querySelector(".productsdetails");
  function displayProducts(products) {
    if (products.length > 0) {
+	//alert(products.length);
      const product_details = products
        .map(
          (product) =>
@@ -341,6 +347,11 @@
      productsContainer.innerHTML = "<p>No Products Available</p>";
    }
  }
+ $("#search-cross").click(()=>{
+	
+	productsContainer.innerHTML = "<p>No Products Available</p>";
+	document.getElementById("searchproducts1").value = "";
+ })
  </script>
 	<!-- Header Section End -->
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

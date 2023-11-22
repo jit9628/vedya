@@ -57,14 +57,6 @@ public class CheckAuthenticateUser {
 		// return (authentication instanceof AnonymousAuthenticationToken) ?true: false;
 		 return (authentication instanceof AnonymousAuthenticationToken) ?-1: checkAuthority;
 	}
-
-	
-	
-	
-	
-	
-	
-	
 	/*====================== SET AUTHENTICATION SECURITY CONTEXT=======================*/
 	public void setAuthenticationSecurityContext(Authentication authentication, HttpServletRequest request,
 			HttpServletResponse response) {
