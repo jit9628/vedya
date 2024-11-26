@@ -25,7 +25,7 @@
 
     <!-- Required meta tags -->
     
-    <title>Vedakshi Jadaun</title>
+    <title>Vedya</title>
     <!-- CSS -->
        <link rel="icon" href="${pageContext.request.contextPath}/resources/icon/favicon.icon" ></link>
     

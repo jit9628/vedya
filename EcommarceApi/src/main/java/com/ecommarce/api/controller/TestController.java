@@ -1,6 +1,5 @@
 package com.ecommarce.api.controller;
 
-import java.beans.Transient;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -51,7 +50,7 @@ import com.ecommarce.api.dao.UserDao;
 import com.ecommarce.api.dto.AddToCartDto;
 import com.ecommarce.api.dto.AdderessDto;
 import com.ecommarce.api.dto.CategoryDto;
-import com.ecommarce.api.dto.OptionsGroupDto;
+//import com.ecommarce.api.dto.OptionsGroupDto;
 import com.ecommarce.api.dto.OrderDto;
 import com.ecommarce.api.dto.ProductDto;
 import com.ecommarce.api.dto.UserImageFileDto;
@@ -59,10 +58,10 @@ import com.ecommarce.api.entity.AddToCart;
 import com.ecommarce.api.entity.Adderess;
 import com.ecommarce.api.entity.Category;
 import com.ecommarce.api.entity.EmailDetails;
-import com.ecommarce.api.entity.OptionForGroups;
+//import com.ecommarce.api.entity.OptionForGroups;
 import com.ecommarce.api.entity.Order;
 import com.ecommarce.api.entity.Product;
-import com.ecommarce.api.entity.ProductOption;
+//import com.ecommarce.api.entity.ProductOption;
 import com.ecommarce.api.payload.OrderDetailsPayload;
 import com.ecommarce.api.payload.OrderDetailsPojo;
 import com.ecommarce.api.repo.ProductRepository;
@@ -75,15 +74,14 @@ import com.ecommarce.api.service.BookingProductService;
 import com.ecommarce.api.service.CategoryService;
 import com.ecommarce.api.service.CityService;
 import com.ecommarce.api.service.EmailService;
-import com.ecommarce.api.service.OptionForGroupsService;
-import com.ecommarce.api.service.OptionsGroupService;
+//import com.ecommarce.api.service.OptionForGroupsService;
+//import com.ecommarce.api.service.OptionsGroupService;
 import com.ecommarce.api.service.OrderService;
-import com.ecommarce.api.service.ProductOptionService;
+//import com.ecommarce.api.service.ProductOptionService;
 import com.ecommarce.api.service.ProductService;
 import com.ecommarce.api.service.StateService;
 import com.ecommarce.api.service.UserImageFileService;
 import com.ecommarce.api.service.UserService;
-import com.ecommarce.api.utility.GenericHandleData;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -113,18 +111,19 @@ public class TestController {
 	private FileUploadHelper fuh;
 	@Autowired
 	private AdderessService adderessService;
-	@Autowired
-	private OptionsGroupService optionsGroupService;
-	@Autowired
-	private OptionForGroupsService optionForGroupsService;
-	@Autowired
-	private ProductOptionService productOptionService;
+//	@Autowired
+//	private OptionsGroupService optionsGroupService;
+//	@Autowired
+//	private OptionForGroupsService optionForGroupsService;
+//	@Autowired
+//	private ProductOptionService productOptionService;
 	@Autowired
 	private AddToCartService addToCartService;
 	@Autowired
 	private StateService stateService;
 	@Autowired
 	private CityService cityService;
+	
 	@Autowired
 	private UserImageFileService userImageFileService;
 	@Autowired
@@ -150,7 +149,9 @@ public class TestController {
 	private UserService service;
 @Autowired
 	private UserRepository repository;
+
 	
+
 	/* ============================ CATEGORY PART==================== */
 	/*------------------- ADD------------*/
 	@PostMapping("add/category")
@@ -756,7 +757,7 @@ public class TestController {
 			mv.addObject("msg", "error");
 			mv.setViewName("Admin/Add-Product");
 			return mv;
-			// TODO: handle exception
+		
 		} catch (Exception e) {
 
 			log.error("Error Value is " + e.getMessage().toUpperCase());
@@ -912,24 +913,24 @@ public class TestController {
 	}
 
 	/* ======================= options groupend points ================= */
-	@PostMapping("addOptionGroups")
-	public ResponseEntity<?> addOptionGroups(@RequestBody OptionsGroupDto optionGroupDto) {
-		Map<String, Object> body = new HashMap<>();
-		try {
-
-			this.optionsGroupService.addOptionGroups(optionGroupDto);
-
-			body.put("status", "200");
-			body.put("message", "added Options Based On Groups :: ");
-			return new ResponseEntity<>(body, HttpStatus.OK);
-			// return new ResponseEntity<>(Map.of("message", "added Options Based On Groups
-			// :: "), HttpStatus.OK);
-		} catch (Exception e) {
-			// return new ResponseEntity<>(Map.of("exception", e.getMessage()),
-			// HttpStatus.OK);
-		}
-		return null;
-	}
+//	@PostMapping("addOptionGroups")
+//	public ResponseEntity<?> addOptionGroups(@RequestBody OptionsGroupDto optionGroupDto) {
+//		Map<String, Object> body = new HashMap<>();
+//		try {
+//
+//			this.optionsGroupService.addOptionGroups(optionGroupDto);
+//
+//			body.put("status", "200");
+//			body.put("message", "added Options Based On Groups :: ");
+//			return new ResponseEntity<>(body, HttpStatus.OK);
+//			// return new ResponseEntity<>(Map.of("message", "added Options Based On Groups
+//			// :: "), HttpStatus.OK);
+//		} catch (Exception e) {
+//			// return new ResponseEntity<>(Map.of("exception", e.getMessage()),
+//			// HttpStatus.OK);
+//		}
+//		return null;
+//	}
 
 //	@PostMapping("addGroupsInOption")
 //	public ResponseEntity<?> addGroupsInOption(@RequestBody OptionForGroupsDto optionForGroupsDto) {
@@ -998,53 +999,53 @@ public class TestController {
 //
 //	}
 
-	@GetMapping("findProductPropertyDetails/{id}")
-	public ResponseEntity<?> findProductPropertyDetailsById(@PathVariable("id") long id) {
-		Map<String, Object> body = new HashMap<>();
-		try {
-			Optional<ProductOption> findProductDetailsById = this.productOptionService.findProductDetailsById(id);
-
-			body.put("status", "200");
-			body.put("message", findProductDetailsById.get());
-			return new ResponseEntity<>(body, HttpStatus.OK);
-			// return new ResponseEntity<>(Map.of("message", findProductDetailsById.get()),
-			// HttpStatus.OK);
-
-		} catch (Exception e) {
-			body.put("status", "200");
-			body.put("message", e.getMessage());
-			return new ResponseEntity<>(body, HttpStatus.OK);
-			// return new ResponseEntity<>(Map.of("exception", e.getMessage()),
-			// HttpStatus.OK);
-
-		}
-
-	}
+//	@GetMapping("findProductPropertyDetails/{id}")
+//	public ResponseEntity<?> findProductPropertyDetailsById(@PathVariable("id") long id) {
+//		Map<String, Object> body = new HashMap<>();
+//		try {
+//			Optional<ProductOption> findProductDetailsById = this.productOptionService.findProductDetailsById(id);
+//
+//			body.put("status", "200");
+//			body.put("message", findProductDetailsById.get());
+//			return new ResponseEntity<>(body, HttpStatus.OK);
+//			// return new ResponseEntity<>(Map.of("message", findProductDetailsById.get()),
+//			// HttpStatus.OK);
+//
+//		} catch (Exception e) {
+//			body.put("status", "200");
+//			body.put("message", e.getMessage());
+//			return new ResponseEntity<>(body, HttpStatus.OK);
+//			// return new ResponseEntity<>(Map.of("exception", e.getMessage()),
+//			// HttpStatus.OK);
+//
+//		}
+//
+//	}
 
 //	get groupoption name
-	@GetMapping("findGroupOptionNameByGroupId/{id}")
-	@Transient
-	public ResponseEntity<?> findGroupOptionNameByGroupId(@PathVariable("id") int id) {
-		Map<String, Object> body = new HashMap<>();
-		try {
-			OptionForGroups findgroupnameByGroupId = this.optionForGroupsService.findgroupnameByGroupId();
-			body.put("status", "200");
-			body.put("message", findgroupnameByGroupId);
-			return new ResponseEntity<>(body, HttpStatus.OK);
-
-			// return new ResponseEntity<>(Map.of("message", findgroupnameByGroupId),
-			// HttpStatus.OK);
-
-		} catch (Exception e) {
-			body.put("status", "200");
-			body.put("message", e.getMessage());
-			return new ResponseEntity<>(body, HttpStatus.OK);
-			// return new ResponseEntity<>(Map.of("exception", e.getMessage()),
-			// HttpStatus.OK);
-
-		}
-
-	}
+//	@GetMapping("findGroupOptionNameByGroupId/{id}")
+//	@Transient
+//	public ResponseEntity<?> findGroupOptionNameByGroupId(@PathVariable("id") int id) {
+//		Map<String, Object> body = new HashMap<>();
+//		try {
+//			OptionForGroups findgroupnameByGroupId = this.optionForGroupsService.findgroupnameByGroupId();
+//			body.put("status", "200");
+//			body.put("message", findgroupnameByGroupId);
+//			return new ResponseEntity<>(body, HttpStatus.OK);
+//
+//			// return new ResponseEntity<>(Map.of("message", findgroupnameByGroupId),
+//			// HttpStatus.OK);
+//
+//		} catch (Exception e) {
+//			body.put("status", "200");
+//			body.put("message", e.getMessage());
+//			return new ResponseEntity<>(body, HttpStatus.OK);
+//			// return new ResponseEntity<>(Map.of("exception", e.getMessage()),
+//			// HttpStatus.OK);
+//
+//		}
+//
+//	}
 
 	// get all option based on group
 	@GetMapping("getProductByCategorId/{id}")
@@ -1078,9 +1079,10 @@ public class TestController {
 	@GetMapping("addtocartproduct")
 //	@ResponseBody
 	public ModelAndView addProductInCart(@RequestParam("products") int products, @RequestParam("size") String size,
-			@RequestParam("orderimage") String orderimage, HttpServletRequest request, HttpSession s, ModelAndView mv) {
+			@RequestParam("qty") int qty,@RequestParam("orderimage") String orderimage, HttpServletRequest request, HttpSession s, ModelAndView mv) {
 		try {
 			log.info(" Session value is :: " + request.getAttribute("userid"));
+			log.info(" totalqty:: " + qty);
 			log.info("Session ::" + request.getSession().getAttribute("userid"));
 			HttpSession session = request.getSession();
 			session.getServletContext().getAttribute("userid");
@@ -1098,6 +1100,8 @@ public class TestController {
 				addToCart.setColor("blue");
 				addToCart.setSize(size);
 				addToCart.setSize(orderimage);
+				addToCart.setQty(qty);
+				
 				int addProductToCart = this.addToCartService.addProductToCart(addToCart);
 				if (addProductToCart == 1) {
 					// mv.setViewName("redirect:");
@@ -1524,7 +1528,7 @@ public class TestController {
 			}
 
 		} catch (Exception e) {
-			// TODO: handle exception
+		
 		}
 		body.put("value", adderessDto.getCity());
 		return new ResponseEntity<>(body, HttpStatus.OK);
@@ -1821,7 +1825,7 @@ public class TestController {
 	@GetMapping("addtocartproducts")
 //	@ResponseBody
 	public ResponseEntity<?> addProductInCarts(@RequestParam("products") int products,
-			@RequestParam("size") String size, @RequestParam("orderimage") String orderimage,
+			@RequestParam("size") String size, @RequestParam("qty") int qty, @RequestParam("orderimage") String orderimage,
 			@RequestParam("color") String color,
 //			@RequestParam("usersid") int usersid1,
 			HttpServletRequest request) {
@@ -1842,6 +1846,7 @@ public class TestController {
 				addToCart.setUsersid(attribute);
 				log.info("choose Color is :" + color);
 				addToCart.setColor(color);
+				addToCart.setQty(qty);
 				/*
 				 * if(size=="" || size==null) { log.info("Please Select Size .. ");
 				 * body.put("message", "Please Select Size "); body.put("status", "200"); return
@@ -1919,13 +1924,18 @@ public class TestController {
 	 * return new ResponseEntity<>(body,HttpStatus.OK); }
 	 */
 
+	
 	@GetMapping("dispatchDetails/{orderid}")
 	public ModelAndView getDispatchDetails(@PathVariable("orderid") long orderid, ModelAndView mv) {
 		List<OrderDetailsPojo> bookingDetail = this.payload.getSpecificUserBookingDetail(orderid);
+		
+		log.info("TOtal Quantity add ::"+bookingDetail.get(0).getOrderquantity()+ "   >>>>>"+bookingDetail);
 		mv.addObject("bookingDetail", bookingDetail);
 		mv.addObject("getTotalprice", bookingDetail.get(0).getTotalprice());
 		mv.addObject("orderid", bookingDetail.get(0).getOrderid());
 		mv.addObject("localaddress", bookingDetail.get(0).getOrderaddress());
+		
+//		mv.addObject("qty", bookingDetail.get(0).getOrderquantity());
 		mv.setViewName("Admin/orderdetails");
 		return mv;
 	}
@@ -2034,5 +2044,9 @@ public class TestController {
 		
 		return new ResponseEntity<>(body,HttpStatus.OK);
 	}
-
+	
+	//===========  ExportToExcel ======================
+	
+	
+	
 }

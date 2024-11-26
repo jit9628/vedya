@@ -7,10 +7,11 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 import com.ecommarce.api.payload.OrderDetailsPayload;
-import com.ecommarce.api.utility.GenericHandleData;
 
 //import com.google.common.annotations.VisibleForTesting;
 @SpringBootApplication
@@ -18,9 +19,9 @@ import com.ecommarce.api.utility.GenericHandleData;
 @EnableAutoConfiguration
 //@VisibleForTesting
 //@EnableJpaRepositories
-
+@EnableScheduling
 @CrossOrigin(origins = "*")
-
+@EnableCaching
 //@org.springframework.context.annotation.Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class EcommarceApiApplication extends SpringBootServletInitializer implements CommandLineRunner {
 	@Autowired

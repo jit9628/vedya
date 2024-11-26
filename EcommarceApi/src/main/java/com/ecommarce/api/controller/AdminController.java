@@ -1,41 +1,31 @@
 package com.ecommarce.api.controller;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.io.FileNotFoundException;
+import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.bind.BindException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.HttpClientErrorException.BadRequest;
-import org.springframework.web.client.HttpClientErrorException.Unauthorized;
-import org.springframework.web.multipart.MultipartException;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.ecommarce.api.CheckAuthenticateUser;
 import com.ecommarce.api.FileUploadHelper;
-import com.ecommarce.api.dto.CategoryDto;
-import com.ecommarce.api.entity.AboutBrand;
-import com.ecommarce.api.entity.BookingProduct;
 import com.ecommarce.api.entity.Category;
-import com.ecommarce.api.service.AboutBrandService;
+import com.ecommarce.api.helper.InvoiceDeails;
+import com.ecommarce.api.payload.OrderDetailsPayload;
+import com.ecommarce.api.payload.OrderDetailsPojo;
+//import com.ecommarce.api.service.AboutBrandService;
 import com.ecommarce.api.service.BookingProductService;
 import com.ecommarce.api.service.CategoryService;
 
@@ -55,11 +45,14 @@ public class AdminController {
 
 	@Autowired
 	private BookingProductService bookingProductService;
+	@Autowired
+	private InvoiceDeails invoiceDeails;
 //	@Autowired
 //	private FileUploadDAO fileUploadDao;
-	@Autowired
-	private AboutBrandService aboutBrandService;
-
+//	@Autowired
+//	private AboutBrandService aboutBrandService;
+@Autowired
+	private OrderDetailsPayload payload;
 	@RequestMapping(value = "/", method = RequestMethod.POST)
 	@PreAuthorize("hasRole('ADMIN') or hasRole('MODERATOR')")
 	public ResponseEntity<?> showUploadForm(HttpServletRequest request) {
@@ -181,71 +174,83 @@ public class AdminController {
 		return MV;
 	}
 
-	@PostMapping("add/aboutbrand")
-	public ModelAndView addCategory(@ModelAttribute("categoryDto") AboutBrand aboutBrand,
-			@RequestPart("file") MultipartFile file, HttpServletRequest request, ModelAndView mv) {
-
-		String msg = "";
-		try {
-
-			log.debug("multipart file is :" + file.getOriginalFilename());
-			log.debug("category name   is :" + aboutBrand.getDiscription());
-
-			if (aboutBrand.getDiscription().equals("") || aboutBrand.getDiscription() == null) {
-				msg = " Category Field Can Not Be Blank : ";
-				mv.addObject("msg", msg);
-				mv.setViewName("/Admin/Add-Brand");
-				return mv;
-			}
-
-			if (file.isEmpty()) {
-				msg = " Select Image File  : ";
-				mv.addObject("msg", msg);
-				mv.setViewName("/Admin/Add-Brand");
-				return mv;
-			}
-
-			fuh.doFileUpload(file, request);
-			aboutBrand.setFilebrand(file.getOriginalFilename());
-			boolean addCategory = this.aboutBrandService.addBrand(aboutBrand);
-
-			if (addCategory) {
-				mv.setViewName("/Admin/Add-Brand");
-				return mv;
-			}
-		} catch (BindException e) {
-			msg = "Category Can Not Be Blank Or Empty";
-			mv.addObject("msg", msg);
-			log.info("BindException Exception");
-			mv.setViewName("redirect:/api/page/index");
-			return mv;
-		} catch (BadRequest e) {
-			msg = "Category Can Not Be Blank Or Empty";
-			log.info("BadRequest Exception");
-			mv.addObject("msg", msg);
-			mv.setViewName("redirect:/api/page/index");
-			return mv;
-		} catch (MultipartException multipartException) {
-			msg = " Please Select image";
-			log.info("BadRequest Exception");
-			mv.addObject("msg", msg);
-			mv.setViewName("redirect:/api/page/index");
-			return mv;
-		} catch (Exception e) {
-			msg = "Category Can Not Be Blank Or Empty";
-			log.info("Root Exception" + e.getMessage());
-			mv.addObject("msg", msg);
-			mv.setViewName("redirect:/api/page/index");
-			return mv;
-		}
-		return mv;
-
-	}
-	
+//	@PostMapping("add/aboutbrand")
+//	public ModelAndView addCategory(@ModelAttribute("categoryDto") AboutBrand aboutBrand,
+//			@RequestPart("file") MultipartFile file, HttpServletRequest request, ModelAndView mv) {
+//
+//		String msg = "";
+//		try {
+//
+//			log.debug("multipart file is :" + file.getOriginalFilename());
+//			log.debug("category name   is :" + aboutBrand.getDiscription());
+//
+//			if (aboutBrand.getDiscription().equals("") || aboutBrand.getDiscription() == null) {
+//				msg = " Category Field Can Not Be Blank : ";
+//				mv.addObject("msg", msg);
+//				mv.setViewName("/Admin/Add-Brand");
+//				return mv;
+//			}
+//
+//			if (file.isEmpty()) {
+//				msg = " Select Image File  : ";
+//				mv.addObject("msg", msg);
+//				mv.setViewName("/Admin/Add-Brand");
+//				return mv;
+//			}
+//
+//			fuh.doFileUpload(file, request);
+//			aboutBrand.setFilebrand(file.getOriginalFilename());
+//			boolean addCategory = this.aboutBrandService.addBrand(aboutBrand);
+//
+//			if (addCategory) {
+//				mv.setViewName("/Admin/Add-Brand");
+//				return mv;
+//			}
+//		} catch (BindException e) {
+//			msg = "Category Can Not Be Blank Or Empty";
+//			mv.addObject("msg", msg);
+//			log.info("BindException Exception");
+//			mv.setViewName("redirect:/api/page/index");
+//			return mv;
+//		} catch (BadRequest e) {
+//			msg = "Category Can Not Be Blank Or Empty";
+//			log.info("BadRequest Exception");
+//			mv.addObject("msg", msg);
+//			mv.setViewName("redirect:/api/page/index");
+//			return mv;
+//		} catch (MultipartException multipartException) {
+//			msg = " Please Select image";
+//			log.info("BadRequest Exception");
+//			mv.addObject("msg", msg);
+//			mv.setViewName("redirect:/api/page/index");
+//			return mv;
+//		} catch (Exception e) {
+//			msg = "Category Can Not Be Blank Or Empty";
+//			log.info("Root Exception" + e.getMessage());
+//			mv.addObject("msg", msg);
+//			mv.setViewName("redirect:/api/page/index");
+//			return mv;
+//		}
+//		return mv;
+//
+//	}
 	@GetMapping("all-brands")
 	public ResponseEntity<?> getBrandData(){
 		return new ResponseEntity<>("Data Available",HttpStatus.OK);
 	}
-	 
-
+	@GetMapping("invoices-logs")
+	public void generateInvoice(HttpServletResponse httpServletResponse) throws FileNotFoundException, MalformedURLException {
+		//set header
+		httpServletResponse.setContentType("application/octet-stream"); // responsible for download file 
+		String headerHey="Content-Disposition";
+		 String headerValue = "attachment; filename=C:\\Users\\Precise\\Documents\\vedya\\EcommarceApi\\AmazoneInvoice.pdf";
+		httpServletResponse.setHeader(headerHey, headerValue);
+		// get data for invoice 
+		long od=623205L;
+		List<OrderDetailsPojo> bookingDetail = this.payload.getSpecificUserBookingDetail(od);
+		log.info("{Deatails Are Booking .. } :"+bookingDetail);
+		this.invoiceDeails.amazoneInvoiceTemplate(bookingDetail,httpServletResponse);	
+	}
+	
+	
 }

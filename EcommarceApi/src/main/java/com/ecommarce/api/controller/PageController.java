@@ -20,6 +20,7 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,20 +32,22 @@ import org.springframework.web.servlet.ModelAndView;
 import com.ecommarce.api.CheckAuthenticateUser;
 import com.ecommarce.api.dao.BookingProductDao;
 import com.ecommarce.api.dao.CategoryDao;
-import com.ecommarce.api.dao.OptionForGroupsDao;
+//import com.ecommarce.api.dao.OptionForGroupsDao;
 import com.ecommarce.api.dao.ProductDao;
+import com.ecommarce.api.dao.ProductDetailsDao;
 import com.ecommarce.api.dto.CategoryDto;
 import com.ecommarce.api.dto.ProductDto;
 import com.ecommarce.api.entity.Adderess;
 import com.ecommarce.api.entity.Category;
-import com.ecommarce.api.entity.OptionForGroups;
+//import com.ecommarce.api.entity.OptionForGroups;
 import com.ecommarce.api.entity.Product;
+import com.ecommarce.api.helper.Helper;
 import com.ecommarce.api.payload.OrderDetailsPayload;
 import com.ecommarce.api.repo.AdderessRepository;
 import com.ecommarce.api.service.AddToCartService;
 import com.ecommarce.api.service.CategoryService;
-import com.ecommarce.api.service.OptionForGroupsService;
-import com.ecommarce.api.service.OptionsGroupService;
+//import com.ecommarce.api.service.OptionForGroupsService;
+//import com.ecommarce.api.service.OptionsGroupService;
 import com.ecommarce.api.service.ProductService;
 import com.ecommarce.api.utility.GenericHandleData;
 
@@ -64,10 +67,10 @@ public class PageController {
 	private CategoryService categoryService;
 	@Autowired
 	private ProductService productService;
-	@Autowired
-	private OptionForGroupsService optionForGroupsService;
-	@Autowired
-	private OptionsGroupService optionsGroupService;
+//	@Autowired
+//	private OptionForGroupsService optionForGroupsService;
+//	@Autowired
+//	private OptionsGroupService optionsGroupService;
 	@Autowired
 	private ProductDao productDao;
 	@Autowired
@@ -78,7 +81,7 @@ public class PageController {
 	private CommonComponents commonComponents;
 
 	// optionforgroup dao instantiation
-	private OptionForGroupsDao optionForGroupsDao;
+//	private OptionForGroupsDao optionForGroupsDao;
 	@Autowired
 	private CategoryDao catDao;
 	@Autowired
@@ -89,12 +92,20 @@ public class PageController {
 	private AdderessRepository adderessRepository;
 	@Autowired
 	private CheckAuthenticateUser checkAuthenticateUser;
-
+	
+	@Autowired
+	private ProductDetailsDao productDetailsDao;
+@Autowired
+	public Helper helper;
 	/*--------------- INDEX PAGE  ---------------*/
 	@GetMapping("index")
+	@CacheEvict(cacheNames = "cachename", allEntries=true)
 	public ModelAndView getIndexPage(ModelAndView mv, HttpServletRequest request) {
 		int countAddToCartProductBasedOnUser = 0;
 		try {
+			helper.expectedDate();
+			//List<ProductDto> productIsOpen = this.productDetailsDao.getProductIsOpen(true);
+			//System.out.println("productIsOpen"+productIsOpen);
 			long totalProducts2 = this.productService.totalProducts();
 			log.info("totalProducts2 :-- " + totalProducts2);
 			if (request.getSession().getAttribute("userid") != null) {
@@ -184,7 +195,9 @@ public class PageController {
 				mv.setViewName("index");
 				return mv;
 			}
+			
 
+			
 		} catch (NullPointerException nullPointerException) {
 			log.warn("Null Pointer Exception  Products Is {}", nullPointerException.getMessage());
 			log.warn("Exceptions All Products Is {}", nullPointerException.getMessage());
@@ -571,12 +584,17 @@ public class PageController {
 	@GetMapping("product-details/{pid}")
 	public ModelAndView getSpecificProductDetails(@PathVariable("pid") int no, ModelAndView mv,
 			HttpServletRequest request) {
+		ArrayList<Integer> quantityValue = null;
 		if (request.getSession().getAttribute("userid") != null) {
+			 quantityValue = this.helper.getQuantityValue();
+			log.info("Quantity values are :"+quantityValue);
 			Long attribute = (Long) request.getSession().getAttribute("userid");
 			// Long attribute = (Long)request.getAttribute("userid");
 			int countAddToCartProductBasedOnUser = this.addToCartService.countAddToCartProductBasedOnUser(attribute);
 			mv.addObject("countAddToCartProductBasedOnUser", countAddToCartProductBasedOnUser);
+			mv.addObject("quantityValue", quantityValue);
 		}
+		quantityValue= this.helper.getQuantityValue();
 		Optional<Product> findProductById = Optional.ofNullable(productService.findProductById(no).get());
 		Product product = findProductById.get();
 		Optional<Category> searchCategoryById = this.categoryService
@@ -627,7 +645,7 @@ public class PageController {
 		}
 		log.info("list of file is :" + sliderfile);
 		log.info("files here " + files);
-
+		mv.addObject("quantityValue", quantityValue);
 		mv.addObject("productsize", productsize);
 		mv.addObject("sliderfile", sliderfile);
 
@@ -853,19 +871,19 @@ public class PageController {
 		return listOfObject;
 	}
 
-	@GetMapping("/productproperty/{id}")
-	public ModelAndView productproperty(@PathVariable("id") int id, ModelAndView mv) {
-
-		// get the size and color
-		List<OptionForGroups> size = this.optionForGroupsDao.findByGroupId(1);
-		List<OptionForGroups> color = this.optionForGroupsDao.findByGroupId(2);
-		Stream<OptionForGroups> stream = size.stream();
-		List<OptionForGroups> collect = stream.collect(Collectors.toList());
-		mv.addObject("sizedata", size);
-		mv.addObject("colordata", color);
-		mv.setViewName("Admin/product-property-add");
-		return mv;
-	}
+//	@GetMapping("/productproperty/{id}")
+//	public ModelAndView productproperty(@PathVariable("id") int id, ModelAndView mv) {
+//
+//		// get the size and color
+//		List<OptionForGroups> size = this.optionForGroupsDao.findByGroupId(1);
+//		List<OptionForGroups> color = this.optionForGroupsDao.findByGroupId(2);
+//		Stream<OptionForGroups> stream = size.stream();
+//		List<OptionForGroups> collect = stream.collect(Collectors.toList());
+//		mv.addObject("sizedata", size);
+//		mv.addObject("colordata", color);
+//		mv.setViewName("Admin/product-property-add");
+//		return mv;
+//	}
 
 	@GetMapping("about")
 	public ModelAndView getAbout(ModelAndView mv, HttpServletRequest request) {
@@ -1036,7 +1054,6 @@ public class PageController {
 		mv.setViewName("Admin/orderdispatchdetails");
 		// mv.setViewName("Admin/orderlist");
 		return mv;
-
 	}
 
 	@GetMapping("forgote-password")

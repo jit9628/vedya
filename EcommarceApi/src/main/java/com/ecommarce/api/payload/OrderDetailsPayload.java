@@ -61,25 +61,25 @@ public class OrderDetailsPayload {
 
 			//a.userid='2' and 
 			return this.jdbcTemplate.query(
-					"Select a.userid, a.localadderess,a.city,b.orderimages,p.productname,b.order_booking_id ,b.remark,a.country,concat(a.firstname,'  ',a.lastname) as customername, p.price,p.price,Sum(p.price)   Over(partition by order_booking_id order by order_booking_id)as total_sum\r\n"
+					"Select a.userid, a.localadderess,a.city,b.orderimages,p.productname,b.order_booking_id ,b.remark,b.totalqty,a.country,concat(a.firstname,'  ',a.lastname) as customername, p.price,p.price,avg(p.price*b.totalqty) as subtotal ,Sum(p.price*b.totalqty)   Over(partition by order_booking_id order by order_booking_id)as total_sum\r\n"
 					+ "From adderess a "
 					+ "Inner join booking_product b "
 					+ "On a.userid = b.usersid "
 					+ "Inner join product p "
 					+ "On b.productsid=p.pid "
 					+ "where order_booking_id ='"+orderid+"' "
-					+ "Group by a.userid, a.localadderess,a.city,p.productname,p.price,b.order_booking_id,b.orderimages,b.remark ,a.country,a.firstname,a.lastname",
+					+ "Group by a.userid, a.localadderess,a.city,p.productname,p.price,b.order_booking_id,b.orderimages,b.remark ,b.totalqty,a.country,a.firstname,a.lastname",
 					new RowMapper<OrderDetailsPojo>() {
 
 						@Override
 						public OrderDetailsPojo mapRow(ResultSet rs, int rowNum) throws SQLException {
 							OrderDetailsPojo pojo = new OrderDetailsPojo();
-
 							//pojo.setCustomername(rs.getString("localadderess"));
-
 							pojo.setPrice(rs.getLong("price"));
 							pojo.setTotalprice(rs.getLong("total_sum"));
+							pojo.setSubtotal(rs.getDouble("subtotal"));
 						pojo.setOrderstatus(rs.getString("remark"));
+						pojo.setOrderquantity(rs.getInt("totalqty"));
 							pojo.setOrderimage(rs.getString("orderimages"));
 							pojo.setOrderid(rs.getLong("order_booking_id"));
 							pojo.setOrderaddress(rs.getString("localadderess"));
@@ -90,6 +90,7 @@ public class OrderDetailsPayload {
 							return pojo;
 						}
 					});
+			
 			// return (List<BookingProductDto>) bookingProductDto;
 		} catch (Exception e) {
 			System.out.println("Exception is :" + e);

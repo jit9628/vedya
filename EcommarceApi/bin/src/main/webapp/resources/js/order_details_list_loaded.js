@@ -45,7 +45,7 @@ function order_details_list_loaded() {
 			
 			$('.totalproduct').text(totalproducts);
 			totalordrr=data['totalordrr'];
-			alert(totalordrr);
+			//alert(totalordrr);
 			$(".totalorders").text(totalordrr);
 		},
 		error: function(data) {
@@ -54,7 +54,6 @@ function order_details_list_loaded() {
 			//call every five second  api
 			//setInterval(order_details_list_loaded, 1000);
 		}
-
 	});
 	/*========= APPEND DATA TABLE ====*/
 	function appendTableData(v, i, a) {

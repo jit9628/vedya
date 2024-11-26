@@ -52,19 +52,19 @@
 	</footer>
 	<!-- Mini Footer Start -->
 	<section>
-		<div class="container">
-			<div class="mini_footer">
-				<div class="row">
-					<div class="col-md-6">
-						<p>Copyright © 2022 vedakshi jadaun</p>
-					</div>
-					<div class="col-md-6">
-						<p class="text-end">Powered by vedakshi jadaun</p>
+			<div class="container">
+				<div class="mini_footer">
+					<div class="row">
+						<div class="col-md-6">
+							<p>Copyright ï¿½ 2022 vedya</p>
+						</div>
+						<div class="col-md-6">
+							<p class="text-end">Powered by vedya </p>
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-	</section>
+		</section>
 	<!-- Mini Footer End -->
 	<!-- Footer End  -->
 

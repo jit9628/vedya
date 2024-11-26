@@ -7,11 +7,12 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.CallableStatementCreator;
@@ -23,8 +24,6 @@ import org.springframework.stereotype.Component;
 import com.ecommarce.api.dto.BookingProductDto;
 import com.ecommarce.api.entity.BookingProduct;
 import com.ecommarce.api.repo.BookingProductRepository;
-
-import lombok.NoArgsConstructor;
 
 @Component
 //@NoArgsConstructor
@@ -99,13 +98,28 @@ public class BookingProductDao {
 	}
 
 	/* ============== DELETE ORDER ====================== */
-
+@Transactional
 	public int deleteOrder(long id) throws SQLException {
 
 		try {
 			String queries = "delete from booking_product where bid='" + id + "'";
-			int update = this.jdbcTemplate.update(queries);
-			return update;
+			int productId = getProductId( id);
+			int quantityOfBookingProduct = quantityOfBookingProduct(id);
+			String checkBookingSatuc = checkBookingSatuc( id);
+			if(checkBookingSatuc.equals("Delivered")) {
+				System.out.println("This Product Is Allready Delivered Your Destination Adderess .. ");
+				//int update = this.jdbcTemplate.update(queries);	
+				return -1;
+			}else {
+				int update = this.jdbcTemplate.update(queries);	
+				manageStocksByQuantity(productId, quantityOfBookingProduct, 'D');
+				return update;
+			}
+			//int update = this.jdbcTemplate.update(queries);
+			//getProductId( id);
+		//manageStocks(productId, 'D');
+			//manageStocksByQuantity(productId, quantityOfBookingProduct, 'D');
+			//return update;
 		} catch (Exception e) {
 			return 0;
 		}
@@ -175,13 +189,12 @@ public class BookingProductDao {
 		try {
 			List resultList = this.entityManager
 					.createNamedStoredProcedureQuery("getFilterDateAndRemarkWiseBookngOrderDetails")
-					.setParameter("fromdate", java.sql.Date.valueOf("2023-08-12")).setParameter("todate", java.sql.Date.valueOf("2023-08-18"))
-					.setParameter("remark", "Dispatch").getResultList();
+					.setParameter("fromdate", java.sql.Date.valueOf("2023-08-12"))
+					.setParameter("todate", java.sql.Date.valueOf("2023-08-18")).setParameter("remark", "Dispatch")
+					.getResultList();
 			// .getFirstResult();
 
-			
-			
-			//System.out.println("List Of Data Is::"+);
+			// System.out.println("List Of Data Is::"+);
 			return resultList;
 		} catch (Exception e) {
 			System.out.println(e);
@@ -191,4 +204,190 @@ public class BookingProductDao {
 
 	}
 
+	// ========================= Manage Stoekc==============
+	@Transactional
+	public long manageStocks(int id, char flag) {
+		int isstocks = 0;
+		try {
+			
+			if (flag == 'D') {
+				System.out.println("Cursor HIt This Block .. .. ");
+				System.out.println("Reverse Flag IS  "+flag);
+//			get all stocks then decrement by one 
+				this.jdbcTemplate.execute("select stocks from product");
+				Query createQuery = this.entityManager
+						.createQuery("select p.stocks from Product p where p.pid='" + id + "'");
+				int singleResult = (Integer) createQuery.getSingleResult();
+				System.out.println("Total Stocks Is :: " + singleResult);
+				isstocks = singleResult +1;
+				String sqll = "update Product p set p.stocks='" + isstocks + "' where p.pid='" + id + "'";
+				int executeUpdate = this.entityManager.createQuery(sqll).executeUpdate();
+				System.out.println("Updated Stocks Are ... " + executeUpdate);
+
+			}
+
+			if (flag == 'I') {
+				System.out.println("Reverse Flag IS  "+flag);
+
+//			get all stocks then decrement by one 
+				this.jdbcTemplate.execute("select stocks from product");
+				Query createQuery = this.entityManager
+						.createQuery("select p.stocks from Product p where p.pid='" + id + "'");
+				int singleResult = (Integer) createQuery.getSingleResult();
+				System.out.println("Total Stocks Is :: " + singleResult);
+				isstocks = singleResult - 1;
+				String sql = "update Product p set p.stocks='" + isstocks + "' where p.pid='" + id + "'";
+				int executeUpdate = this.entityManager.createQuery(sql).executeUpdate();
+				System.out.println("Updated Stocks Are ... " + executeUpdate);
+
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return 1;
+	}
+
+	//============== find product id from bookingid ===============
+	
+	@SuppressWarnings("deprecation")
+	@Transactional
+	public int getProductId(long bid) {
+		
+		try {
+			
+			
+			    String sql ="select bp.productsid from booking_product bp where bp.bid=?";
+
+			    @SuppressWarnings("deprecation")
+				int ids = (Integer) jdbcTemplate.queryForObject(
+			            sql, new Object[] { bid }, Integer.class);
+
+			    System.out.println("getProductId Id Is :"+ids);
+			    return ids;
+			
+			
+			
+//			System.out.println("Execute Product IDs ..");
+//			Query createQuery = this.entityManager
+//					.createQuery("select bp.productid from BookingProduct bp where bp.bid='" + bid + "'");
+//			int singleResult = (Integer) createQuery.getSingleResult();
+//			System.out.println("Product Id Is :: "+singleResult);
+//			return singleResult;	
+		} catch (Exception e) {
+			System.out.println("Exceptions Occure ..");
+			System.out.println(e.getLocalizedMessage());
+		}
+		return 0;
+		
+		
+		
+	}
+	
+	
+	// get total quantity of booked product
+	@SuppressWarnings("deprecation")
+	@Transactional
+public int quantityOfBookingProduct(long bid) {
+
+	try {
+		
+		
+		    String sql ="select bp.totalqty from booking_product bp where bp.bid=?";
+
+		    @SuppressWarnings("deprecation")
+			int ids = (Integer) jdbcTemplate.queryForObject(
+		            sql, new Object[] { bid }, Integer.class);
+
+		    System.out.println("Total Quantity  Booked Product :"+ids);
+		    return ids;
+		
+		
+		
+//		System.out.println("Execute Product IDs ..");
+//		Query createQuery = this.entityManager
+//				.createQuery("select bp.productid from BookingProduct bp where bp.bid='" + bid + "'");
+//		int singleResult = (Integer) createQuery.getSingleResult();
+//		System.out.println("Product Id Is :: "+singleResult);
+//		return singleResult;	
+	} catch (Exception e) {
+		System.out.println("Exceptions Occure ..");
+		System.out.println(e.getLocalizedMessage());
+	}
+	return 0;
+}
+	
+	
+	// ===Check Booking Status================
+	
+	public String checkBookingSatuc(long bid) {
+		try {
+			
+			
+		    String sql ="select bp.remark from booking_product bp where bp.bid=?";
+
+		    @SuppressWarnings("deprecation")
+			String isBookingRemark = (String) jdbcTemplate.queryForObject(
+		            sql, new Object[] { bid }, String.class);
+
+		    System.out.println(" Booked Product remark :"+isBookingRemark);
+		    return isBookingRemark;
+		
+		
+		
+//		System.out.println("Execute Product IDs ..");
+//		Query createQuery = this.entityManager
+//				.createQuery("select bp.productid from BookingProduct bp where bp.bid='" + bid + "'");
+//		int singleResult = (Integer) createQuery.getSingleResult();
+//		System.out.println("Product Id Is :: "+singleResult);
+//		return singleResult;	
+	} catch (Exception e) {
+		System.out.println("Exceptions Occure ..");
+		System.out.println(e.getLocalizedMessage());
+	}
+	return "";
+	}
+	
+	@Transactional
+	public void manageStocksByQuantity(int pid, int totalqty, char flag) {
+		int isstocks=0;
+		
+		
+		
+		
+		if(flag=='I') {
+		this.jdbcTemplate.execute("select stocks from product");
+		Query createQuery = this.entityManager
+				.createQuery("select p.stocks from Product p where p.pid='" + pid + "'");
+		int singleResult = (Integer) createQuery.getSingleResult();
+		System.out.println("Total Stocks Is :: " + singleResult);
+		isstocks = singleResult - totalqty;
+		String sql = "update Product p set p.stocks='" + isstocks + "' where p.pid='" + pid + "'";
+		int executeUpdate = this.entityManager.createQuery(sql).executeUpdate();
+		System.out.println("Updated Stocks Are ... " + executeUpdate);
+		
+	}
+		
+		if (flag == 'D') {
+			System.out.println("Cursor HIt This Block .. .. ");
+			System.out.println("Reverse Flag IS  "+flag);
+//		get all stocks then decrement by one 
+			this.jdbcTemplate.execute("select stocks from product");
+			Query createQuery = this.entityManager
+					.createQuery("select p.stocks from Product p where p.pid='" + pid + "'");
+			int singleResult = (Integer) createQuery.getSingleResult();
+			System.out.println("Total Stocks Is :: " + singleResult);
+			isstocks = singleResult +totalqty;
+			String sqll = "update Product p set p.stocks='" + isstocks + "' where p.pid='" + pid + "'";
+			int executeUpdate = this.entityManager.createQuery(sqll).executeUpdate();
+			System.out.println("Updated Stocks Are ... " + executeUpdate);
+
+		}	
+			
+	}
+
+
+	
+	
+	
 }

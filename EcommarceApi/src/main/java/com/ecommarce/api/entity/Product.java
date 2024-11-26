@@ -66,6 +66,7 @@ public class Product {
 	private TreeSet<String> productsize = new TreeSet<>();
 	private int createdby;
 	private int updatedby;
+	private boolean isOpen;
 	/*
 	 * @Column
 	 *

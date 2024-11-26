@@ -12,12 +12,14 @@ $(document)
 
 /*========= append html data ============ */
 
-function myFunction(v, i, a,arr2) {
+function myFunction(v, i, a) {
+
+
 	$("#appendeddata")
-		.append('<li class="list-group-item">'+
+		.append('<li class="list-group-item">' +
 			'<div class="row align-items-center">' +
 			'<div class="col-3">' +
-			'<a href="/api/page/product-details/'+v.pid+'"> <img src="/resources/upload_file/' + v.filesretrieve[0] + '" alt="img" class="img-fluid"></a>'
+			'<a href="/api/page/product-details/' + v.pid + '"> <img src="/resources/upload_file/' + v.filesretrieve[0] + '" alt="img" class="img-fluid"></a>'
 			+ '</div>' +
 			'<div class="col d-flex align-items-center justify-content-between">' +
 			'<div class="pl-2">' +
@@ -31,7 +33,7 @@ function myFunction(v, i, a,arr2) {
 			+ '</div>' +
 			'</div>' +
 
-			'</div>'+
+			'</div>' +
 			'</li>'
 		);
 }
@@ -43,48 +45,65 @@ function loadAddToCartData() {
 		success: function(data) {
 			//console.log(data);
 			arr = data['productList'];
-			console.log(arr);
+			console.log("Add To Cart Data is ::" + arr);
+
+			/*if (arr === undefined) {
+				alert("data is :");
+				//addtocartvalue(data['countAddToCartProductBasedOnUser']);
+				arr2 = data["CategoryDatalist"];
+					console.log("SHOPPING CART"+arr2);
+				arr2.forEach(myFunctionn);
+
+
+			} else {*/
 			arr.forEach(myFunction);
-			amountcart(data);
+
+			arr2 = data["CategoryDatalist"];
+			arr2.forEach(myFunctionn);
 			addtocartvalue(data['countAddToCartProductBasedOnUser']);
-			//arr2=data["allCategories"];
-			//console.log("SHOPPING CART"+arr2);
-			//arr2.forEach(myFunctionn);
-			
-/*$("#amountdetails").append(
-				'<ul class="list-group  list-group-flush-x">'+
-				'<li class="list-group-item d-flex"><span>Subtotal</span> <span class="ms-auto fw-bold"> '+data["total"]+'</span></li>'+
-				'<li class="list-group-item d-flex"><span>Tax</span> <span class="ms-auto fw-bold">'+data["Tax"]+' </span></li>'+
-				'<li class="list-group-item d-flex"><span class="fw-bold">Total</span><span class="ms-auto fw-bold"> MRP '+data["total"]+'</span></li>'+
-				'</ul>'
-			);*/
+			amountcart(data);
+			/*}*/
+			//alert("data are  :");
+			//console.log(arr);
+			//arr.forEach(myFunction);
+			//	amountcart(data);
+
+
+			/*$("#amountdetails").append(
+							'<ul class="list-group  list-group-flush-x">'+
+							'<li class="list-group-item d-flex"><span>Subtotal</span> <span class="ms-auto fw-bold"> '+data["total"]+'</span></li>'+
+							'<li class="list-group-item d-flex"><span>Tax</span> <span class="ms-auto fw-bold">'+data["Tax"]+' </span></li>'+
+							'<li class="list-group-item d-flex"><span class="fw-bold">Total</span><span class="ms-auto fw-bold"> MRP '+data["total"]+'</span></li>'+
+							'</ul>'
+						);*/
 		},
 		error: function(data) {
+			console.log(data);
 			//console.log("error");
-		//	console.log(data);
+			//	console.log(data);
 		}
 
 	});
 }
 
-function amountcart(data){
-	
+function amountcart(data) {
+
 	$("#amountdetails").append(
-				'<ul class="list-group  list-group-flush-x">'+
-				'<li class="list-group-item d-flex"><span>Subtotal</span> <span class="ms-auto fw-bold"> '+data["total"]+'</span></li>'+
-				'<li class="list-group-item d-flex"><span>Tax</span> <span class="ms-auto fw-bold">'+data["Tax"]+' </span></li>'+
-				'<li class="list-group-item d-flex"><span class="fw-bold">Total</span><span class="ms-auto fw-bold"> MRP '+data["total"]+'</span></li>'+
-				
-				
-				
-				'</ul>'
-			);
-	
-	
+		'<ul class="list-group  list-group-flush-x">' +
+		'<li class="list-group-item d-flex"><span>Subtotal</span> <span class="ms-auto fw-bold"> ' + data["total"] + '</span></li>' +
+		'<li class="list-group-item d-flex"><span>Tax</span> <span class="ms-auto fw-bold">' + data["Tax"] + ' </span></li>' +
+		'<li class="list-group-item d-flex"><span class="fw-bold">Total</span><span class="ms-auto fw-bold"> MRP ' + data["total"] + '</span></li>' +
+
+
+
+		'</ul>'
+	);
+
+
 }
 
-function addtocartvalue(values){
-	
+function addtocartvalue(values) {
+
 	$("#countaddtocartvalue").text(values);
 }
 
@@ -144,12 +163,34 @@ function successMessage(msg) {
 	);
 }*/
 
-	/*$("#appendcategorylist").click(()=>{
-		alert("success");
-	});*/
+/*$("#appendcategorylist").click(()=>{
+	alert("success");
+});*/
+
+function myFunctionn(v, i, a) {
+	$("#appendcategorylist").append(
+
+		'<li>' +
+		'<a class="dropdown-item" href="/api/page/AllCategories" onclick="addClasses()">' + v.categoryname + '</a>' +
+		'</li>'
+
+	);
+
+}
+
+
+$("#clicked").click(function() {
+	$("#clicked").addClass("show");
+	$("#appendcategorylist").addClass("show");
+});
 
 
 
+
+
+$(".selectedimage").change(function() {
+	alert("success");
+})
 
 
 

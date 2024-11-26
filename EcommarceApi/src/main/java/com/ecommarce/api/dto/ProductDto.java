@@ -38,7 +38,7 @@ public class ProductDto {
 	 * private List<String> sized = new ArrayList<>(); private String[] sizes;
 	 */
 	
-	
+	private boolean isOpen;
 	private String sizes;
 
 }

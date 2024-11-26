@@ -43,7 +43,7 @@
 									</div>
 									<div class="bg-inner cart-section order-details-table">
 										<div class="row g-4">
-											<div class="col-xl-8">
+											<div class="col-xl-9">
 												<div class="table-responsive table-details">
 													<table class="table cart-table table-borderless">
 														<thead>
@@ -63,13 +63,22 @@
 																			<div class="product-image">
 																				<img
 																					src="${pageContext.request.contextPath}/resources/upload_file/${data.orderimage }"
-																					class="img-fluid" alt="Product">
+																					class="img-fluid order_item_image" alt="Product">
 																			</div>
-																			<div class="product-name">
+																			<!-- <div class="product-name">
 																				<h5>${data.opname}</h5>
 																				<h6>26-12-2022</h6>
-																			</div>
-																		</div></td>
+																			</div> -->
+																		</div>
+																	</td>
+																	<td><div class="product-detail-box">
+																		
+																		<div class="product-name">
+																			<h5>${data.opname}</h5>
+																			<h6>26-12-2022</h6>
+																		</div>
+																	</div>
+																</td>
 																	<td>
 																		<div class="product-detail-box">
 																			<h6>Price</h6>
@@ -78,16 +87,29 @@
 																	</td>
 																	<td>
 																		<div class="product-detail-box">
+																			<h6>qty</h6>
+																			<h5>${data.orderquantity }</h5>
+																		</div>
+																	</td>
+																	
+																	<td>
+																		<div class="product-detail-box">
+																			<h6>subtotal</h6>
+																			<h5>${data.subtotal }</h5>
+																		</div>
+																	</td> 
+																	<!-- <td>
+																		<div class="product-detail-box">
 																			<h6>Order Id</h6>
 																			<h5>${data.orderid}</h5>
 																		</div>
-																	</td>
-																	<td>
+																	</td> -->
+																	<!-- <td>
 																		<div class="product-detail-box">
 																			<h6>Customer Name</h6>
 																			<h5>${data.customername }</h5>
 																		</div>
-																	</td>
+																	</td> -->
 																</tr>
 															</c:forEach>
 														</tbody>
@@ -120,7 +142,7 @@
 																</td>
 															</tr> -->
 															<tr class="table-order">
-																<td colspan="3">
+																<td colspan="4">
 																	<h5>Total Price :</h5>
 																</td>
 																<td>
@@ -133,7 +155,7 @@
 												</div>
 											</div>
 
-											<div class="col-xl-4">
+											<div class="col-xl-3">
 												<div class="order-success">
 													<div class="row g-4">
 														<!-- <h4>summery</h4>

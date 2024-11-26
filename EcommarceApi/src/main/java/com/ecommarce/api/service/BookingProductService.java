@@ -21,5 +21,4 @@ public interface BookingProductService {
 	public Map<String,Object> getFilterDateAndRemarkWiseBookngOrderDetails(String fromdate,String todate,String remark);
 	public int totalProducts();
 	 
-
 }

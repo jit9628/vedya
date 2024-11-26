@@ -31,7 +31,7 @@ import lombok.extern.slf4j.Slf4j;
 //		prePostEnabled = true)
 @EnableMethodSecurity(prePostEnabled = true)
 @EnableWebSecurity
-@Slf4j
+
 public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
 	@Autowired
 	UserDetailsServiceImpl userDetailsService;
@@ -43,7 +43,7 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
 	private AuthEntryPointJwt unauthorizedHandler;
 
 	@Bean
-	public AuthTokenFilter authenticationJwtTokenFilter() {
+	 AuthTokenFilter authenticationJwtTokenFilter() {
 		return new AuthTokenFilter();
 	}
 
@@ -52,7 +52,7 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
 //    authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
 //  }
 	@Bean
-	public DaoAuthenticationProvider authenticationProvider() {
+	 DaoAuthenticationProvider authenticationProvider() {
 		DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
 
 		authProvider.setUserDetailsService(userDetailsService);
@@ -68,12 +68,12 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
 //  }
 
 	@Bean
-	public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
+	 AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
 		return authConfig.getAuthenticationManager();
 	}
 
 	@Bean
-	public PasswordEncoder passwordEncoder() {
+	 PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
 //  @Override
@@ -89,8 +89,7 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
 //  }
 
 	@Bean
-	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-
+	 SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 //		http.authorizeRequests()
 //		.antMatchers("/details").access("hasRole('ROLE_USER')")
 //		.and()
@@ -113,14 +112,14 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
 				.antMatchers("/api/page/ProductPage","/api/test/categorypage/**").permitAll()
 				.antMatchers("/api/test/category/list", "/api/test/add/category", "/api/test/categoryRemoveById/**","/api/test/editAddress/**","/api/test/verifiy-otp/**","/api/test/categoryupdate/**",
 						"/api/test//deleteproduct/**", "/api/test/deleteproduct/**", "/api/test/update-product/**",
-						"/api/test/update-product/**", "/api/page/All-Products","/api/page/contacts", "/api/test/product/**","/api/test/getProductByCategorId/**","/api/page/Product-dtls","/api/page/searchdata","/api/page/Product-dtl-usr","/api/user/cancelorder/**","/api/usr/filterPrice/**"
+						"/api/test/update-product/**", "/api/page/All-Products","/api/page/contacts", "/api/test/product/**","/api/test/product/excel","/api/test/getProductByCategorId/**","/api/page/Product-dtls","/api/page/searchdata","/api/page/Product-dtl-usr","/api/user/cancelorder/**","/api/usr/filterPrice/**"
 						,"/api/test/ProductUpdate", "/api/test/remodeproductfromcart/**", "/api/test/jitu",
 						"/api/test/check-out", "/api/test/categoryLists", "/api/test/search-product/**", "/api/user/bookproduct/**","/api/user/getintouch","/api/user/touch","/api/test/addtocartproducts/**","/api/page/indexpage-Product-dtls","/api/page/exportToExcel")
 				.permitAll()
 				// .hasRole("ADMIN")
 				.antMatchers("/api/admin/order-listdata").permitAll()
 				// .antMatchers("/EcommarceApi/**").permitAll()
-				.antMatchers("/api/user/my-order","/api/admin/aboutbrand","/api/admin/add/aboutbrand").permitAll()
+				.antMatchers("/api/user/my-order","/api/admin/aboutbrand","/api/admin/invoices-logs","/api/admin/add/aboutbrand").permitAll()
 				.antMatchers("/api/test/shoping-cart", "/api/test/addtocartproduct/**","/api/test/upload/userimage",
 						"/api/test/categoryRemoveByIds/**", "/api/test/GetAllProducts")
 				.permitAll().antMatchers("/api/user/forgote-password").permitAll()
@@ -159,17 +158,4 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
 //		web.ignoring().antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/images/**", "/UploadFiles/**");
 //	}
 
-  @Bean
-    public CorsFilter corsFilter() {
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        CorsConfiguration config = new CorsConfiguration();
-        config.setAllowCredentials(true);
-        config.addAllowedOrigin("http://localhost:3000");  // Set the allowed origins
-        config.addAllowedHeader("*");
-        config.addAllowedMethod("*");
-        source.registerCorsConfiguration("/**", config);
-        return new CorsFilter(source);
-    }  
-
-	
 }

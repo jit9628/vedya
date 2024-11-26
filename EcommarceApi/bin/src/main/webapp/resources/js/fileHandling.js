@@ -248,13 +248,13 @@ function failureMessage(msg) {
 	})
 
 }
-
+/*
 function funcabc(id) {
 	var vall = $('input[name="flexRadioDefault"]:checked').val();
 
 	var totalprice = $(".totalprice").text();
 	$("#placeorder").click(function() {
-		/*alert("Your Order Is Place Your Address :: ");*/
+	
 		// call ajax 
 		$.ajax({
 			type: 'GET',
@@ -286,7 +286,7 @@ function funcabc(id) {
 
 
 }
-
+*/
 
 /*remove content */
 

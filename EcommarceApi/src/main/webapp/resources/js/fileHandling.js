@@ -93,7 +93,7 @@ function appendAddress(v, i, a) {
 			'<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6" id="mainaddressbody"> <div class="card-wrap border rounded mb-4"> <div class="px-3 py-2 br-bottom d-flex align-items-center justify-content-between">'
 			+ '<div> <h4 class="fs-md ft-bold mb-2">Shipping Address</h4><p class="m-0 p-0"><span class="text-success bg-light-success small ft-medium px-2 py-1">' + v.accounttype + '</span></p></div>'
 			+ '<div>' +
-			'<a href="/api/page/updateAddress/'+ids+'" type="button"class="border p-3 me-2 circle text-dark d-inline-flex align-items-center justify-content-center editbutton" >' +
+			'<a href="/api/page/updateAddress/' + ids + '" type="button"class="border p-3 me-2 circle text-dark d-inline-flex align-items-center justify-content-center editbutton" >' +
 			'<i class="fas fa-pen-nib position-absolute"></i>' +
 			'</a>' +
 			'<button type="button" class="border bg-white text-danger p-3 circle text-dark d-inline-flex align-items-center justify-content-center removeadr"onclick="deleteAdrr(' + ids + ')">' +
@@ -113,8 +113,8 @@ function appendAddress(v, i, a) {
 
 function editAdr(id) {
 
-	
-	
+
+
 	/*$.ajax({
 		type: 'GET',
 		url: '/api/page/updateAddress/' + id,
@@ -155,8 +155,8 @@ function editAdr(id) {
 	
 		}
 	});*/
-	
-	
+
+
 
 }
 function deleteAdrr(id) {
@@ -166,7 +166,7 @@ function deleteAdrr(id) {
 		url: '/api/user/deleteAddress/' + id,
 		success: function(data) {
 			if (data['statusCode'] == 200) {
-successMessagedel();
+				successMessagedel();
 			}
 			if (data['statusCode'] == 226) {
 				alert(data['message']);
@@ -222,7 +222,7 @@ function failureMessage(msg) {
 
 function funcabc(id) {
 	var vall = $('input[name="flexRadioDefault"]:checked').val();
-
+	alert("address id "+vall);
 	var totalprice = $(".totalprice").text();
 	$("#placeorder").click(function() {
 		/*alert("Your Order Is Place Your Address :: ");*/
@@ -247,6 +247,7 @@ function funcabc(id) {
 				//	window.location.replace("/api/auth/userdashboard");
 			},
 			error: function(data) {
+				
 				console.log(data);
 			}
 
@@ -260,9 +261,15 @@ function funcabc(id) {
 /*=== cjeck address is select or not =======*/
 
 $("#placeorder").click(function() {
-
+	alert("Order Placed ..");
+	const today = new Date();
+	const nextThreeDays = new Date(today.setDate(today.getDate() + 3));
+	console.log(nextThreeDays);
+	var dates = convert(nextThreeDays.toString);
+	//alert(dates);
+	//console.log(dates);
 	var vall = $('input[name="flexRadioDefault"]:checked').val();
-	console.log(vall);
+	
 	if (vall == undefined) {
 		orderFailureResponse("Please Select Addressss");
 	}
@@ -281,7 +288,12 @@ function remove_order_detail_List() {
 
 }
 
-
+function convert(str) {
+	var date = new Date(str),
+		mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+		day = ("0" + date.getDate()).slice(-2);
+	return [date.getFullYear(), mnth, day].join("-");
+}
 
 
 
@@ -294,12 +306,13 @@ function OrderSuccessMessageResponse(msg) {
 		icon: 'success',
 		title: msg,
 		showConfirmButton: false,
-		timer: 1000
+		timer: 300000
 
 	})
-	window.location.replace("/api/auth/userdashboard");
-}
+	setInterval(function() { window.location.replace("/api/auth/userdashboard") }, 1000);
 
+	//window.location.replace("/api/auth/userdashboard");
+}
 
 function orderFailureResponse(msg) {
 	Swal.fire({
@@ -311,4 +324,6 @@ function orderFailureResponse(msg) {
 		timer: 3000
 
 	})
+	setInterval(function() { window.location.replace("/api/auth/userdashboard") }, 1000)
+
 }

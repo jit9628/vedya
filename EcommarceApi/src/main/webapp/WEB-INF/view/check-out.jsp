@@ -241,16 +241,7 @@
 		type="text/javascript"></script> --%>
 	<script
 		src="${pageContext.request.contextPath}/resources/js/fileHandling.js"
-		type="text/javascript"></script>
-
-
-
-
-
-
-
-
-
+		type="text/javascript"></script> 
 	<script
 		src="${pageContext.request.contextPath}/resources/js/check-out.js"
 		type="text/javascript"></script>

@@ -12,4 +12,5 @@ public class AddToCartDto {
 	private String size;
 	private String color;
 	private String orderimage;
+	private int qty;
 }

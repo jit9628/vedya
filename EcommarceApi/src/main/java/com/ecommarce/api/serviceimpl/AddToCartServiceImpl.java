@@ -47,6 +47,7 @@ log.info("User Details is :"+findById2);
 			map.setUsers(user);
 			map.setColor(addToCartDto.getColor());
 			map.setSize(addToCartDto.getSize());
+			map.setQty(addToCartDto.getQty());
 			/*=== check product is exists or not in add to cart table======= */
 			
 			int existsByUsersAndProducts = this.addToCartRepository.existsByUsersAndProducts(user.getId(),product.getPid());

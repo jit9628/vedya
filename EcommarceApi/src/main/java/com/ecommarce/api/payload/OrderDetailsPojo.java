@@ -16,4 +16,6 @@ public class OrderDetailsPojo {
 	private String orderaddress;
 	private String orderstatus;
 	private  long totalprice;
+	private double subtotal;
+	private int orderquantity;
 }

@@ -10,7 +10,7 @@
     <meta name="author" content="pixelstrap">
     <!-- <link rel="icon" href="assets/images/favicon.png" type="image/x-icon">
     <link rel="shortcut icon" href="assets/images/favicon.png" type="image/x-icon"> -->
-    <title>Vedakshi Jadaun</title>
+    <title>Vedya</title>
 
     <!-- Google font-->
 

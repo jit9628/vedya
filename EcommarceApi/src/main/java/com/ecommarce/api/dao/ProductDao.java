@@ -200,6 +200,5 @@ return query;
 	
 	
 	
-	
 
 }

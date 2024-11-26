@@ -24,8 +24,10 @@ public class BookingProductDto {
 	private String remark;
 	private int addressid;
 	private Date currentdate;
+	private Date expecteddate;
 	private String orderimages;
 	public String order_booking_id;
+	private int totalqty;
 
 	/*
 	 * private long actualprice; private long discountprice; private long

@@ -11,7 +11,7 @@ import com.ecommarce.api.entity.Category;
 import com.ecommarce.api.entity.Product;
 import com.ecommarce.api.repo.AddToCartRepository;
 import com.ecommarce.api.repo.CategoryRepository;
-import com.ecommarce.api.repo.ProductOptionRepository;
+//import com.ecommarce.api.repo.ProductOptionRepository;
 import com.ecommarce.api.repo.ProductRepository;
 import com.ecommarce.api.service.ProductService;
 import lombok.AllArgsConstructor;
@@ -30,7 +30,7 @@ public class ProductServiceImpl implements ProductService {
 	private AddToCartRepository addToCartRepository;
 	ProductDao productDao;
 	ModelMapper mapper;
-	private ProductOptionRepository productOptionRepository;
+	//private ProductOptionRepository productOptionRepository;
 
 	@Override
 	public boolean addProduct(ProductDto productDto) {
@@ -76,6 +76,7 @@ public class ProductServiceImpl implements ProductService {
 	public List<Product> getAllProduct() {
 		try {
 			List<Product> findAll = this.productRepository.findAll();
+			log.info("Product Service executed .."+findAll);
 			if (findAll.isEmpty()) {
 				return null;
 			}
@@ -176,7 +177,7 @@ public class ProductServiceImpl implements ProductService {
 		List<Product> findByCategory = this.productDao.findByCategory(catid);
 		return findByCategory;
 	}
-
+	//======= filtering data========
 	@Override
 	public List<Product> filterProductByPrice(long priceone,long pricetwo) {
 		List<Product> filterdProduct = this.productDao.filterdProduct(priceone,pricetwo);

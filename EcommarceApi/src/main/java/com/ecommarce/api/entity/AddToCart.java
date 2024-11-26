@@ -33,4 +33,5 @@ public class AddToCart {
 	private String size;
 	private String color;
 	private String orderimage;
+	private int qty;
 }

@@ -57,7 +57,7 @@ import com.ecommarce.api.utility.RandomStringValue;
 
 import lombok.extern.slf4j.Slf4j;
 
-@CrossOrigin(origins = "http://localhost:8005")
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api/auth")
 @Slf4j
@@ -465,7 +465,8 @@ System.out.println("Your Role Is ::"+chekRole);
 				
 				mv.setViewName("Admin/Dashboard");
 				return mv;
-			}else {
+			}
+			else {
 				mv.setViewName("redirect:/api/page/LogIn");
 				return mv;
 			}

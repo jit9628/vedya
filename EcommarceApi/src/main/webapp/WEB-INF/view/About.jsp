@@ -8,7 +8,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>Vedakshi Jadaun</title>
+<title>Vedya</title>
 <!-- CSS -->
 <%@ include file="links.jsp"%>
 <!--    <link rel="stylesheet" href="./css/bootstrap.css">
@@ -33,7 +33,7 @@
 			<div class="row">
 				<div class="col-md-12 my-5">
 
-					<p>The VJ (Vedakshi Jadaun) is a fashion Textile Brand from
+					<p>The VJ (Vedya) is a fashion Textile Brand from
 						Jaipur (Rajasthan) which is a folk representation to indian finest
 						Craftsmanship, We aim to praise traditional textiles, Together
 						with all artisanship who appeared active in preserving the

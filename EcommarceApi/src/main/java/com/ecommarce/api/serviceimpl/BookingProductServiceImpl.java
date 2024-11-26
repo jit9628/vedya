@@ -5,6 +5,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +18,7 @@ import com.ecommarce.api.dao.BookingProductDao;
 import com.ecommarce.api.entity.AddToCart;
 import com.ecommarce.api.entity.BookingProduct;
 import com.ecommarce.api.entity.EmailDetails;
+import com.ecommarce.api.helper.Helper;
 import com.ecommarce.api.repo.AddToCartRepository;
 import com.ecommarce.api.repo.AdderessRepository;
 import com.ecommarce.api.repo.BookingProductRepository;
@@ -37,15 +43,22 @@ public class BookingProductServiceImpl implements BookingProductService {
 	private AdderessRepository adderessRepository;
 	@Autowired
 	private EmailDetails details;
-	
+
 	@Autowired
 	private EmailService emailService;
 
+	@Autowired
+	private Helper helper;
+
 	@Override
 	public boolean bookProduct(long id, int adrid) {
+
 		String randomnumber = "";
 		randomnumber = RandomStringValue.getRandomNumber();
 
+		// total product
+
+		// get Data Add to cart
 		List<AddToCart> findByUsers = this.addToCartRepository.findByUsers(id);
 		log.info("add cart data is :: " + findByUsers.get(0).getProducts().getPid());
 		int size = findByUsers.size();
@@ -54,28 +67,33 @@ public class BookingProductServiceImpl implements BookingProductService {
 			BookingProduct dto = new BookingProduct();
 			dto.setProductid(findByUsers.get(i).getProducts());
 			dto.setUserid(findByUsers.get(i).getUsers());
-			
 			dto.setRemark("In Progress");
 			dto.setCurrentdate(new Date());
-
+			dto.setExpecteddate(helper.expectedDate()); // expected delivery date 5 days interval from current date
+			dto.setTotalqty(findByUsers.get(i).getQty()); // changes 1-december
 			dto.setOrderimages(findByUsers.get(i).getOrderimage());
 			bookingproductdata.add(dto);
 			BookingProduct map = this.mapper.map(dto, BookingProduct.class);
 			map.setProductid(dto.getProductid());
-
+			map.setTotalqty(dto.getTotalqty());
 			map.setAddressid(this.adderessRepository.findById(adrid).get());
 			map.setOrder_booking_id(randomnumber);
 			this.bookingProductRepository.save(map);
+		// long manageStocks =
+		 // this.bookingProductDao.manageStocks(findByUsers.get(i).getProducts().getPid(),'I');
+			this.bookingProductDao.manageStocksByQuantity(findByUsers.get(i).getProducts().getPid(), dto.getTotalqty(),
+					'I');
+//			manage product sytocks
+
 			this.addToCartRepository.deleteById(findByUsers.get(i).getCartid());
 		}
 		details.setRecipient(this.adderessRepository.findById(adrid).get().getEmail());
 		details.setMsgBody(randomnumber);
 		details.setSubject("Bookid Order Status");
-		
+
 		String sendSimpleMail = emailService.sendSimpleMail(details);
 		log.info(sendSimpleMail);
-		
-		
+
 // convert dto into entity
 //	BookingProduct map = this.mapper.map(bookingproductdata, BookingProduct.class);
 //		this.bookingProductRepository.save(map);
@@ -129,7 +147,11 @@ public class BookingProductServiceImpl implements BookingProductService {
 	@Override
 	public boolean cancelOrder(long bid) {
 		try {
+			// get productid from booking id
+
+			int productId = this.bookingProductDao.getProductId(bid);
 			this.bookingProductRepository.deleteById(bid);
+
 			return true;
 		} catch (Exception e) {
 			log.info("Exception is :: " + e);
@@ -141,24 +163,28 @@ public class BookingProductServiceImpl implements BookingProductService {
 
 	@SuppressWarnings("deprecation")
 	@Override
-	public Map<String,Object> getFilterDateAndRemarkWiseBookngOrderDetails(String fromdate,String todate,String remark) {
-		
-	java.sql.Date fromdates = java.sql.Date.valueOf(fromdate);
-	java.sql.Date toDates = java.sql.Date.valueOf(todate);
-	System.out.println("fromdates"+fromdates);
-	System.out.println("toDates"+toDates);
-	Map<String, Object> filterDateAndRemarkWiseBookngOrderDetails = this.bookingProductDao.getFilterDateAndRemarkWiseBookngOrderDetails(fromdates, toDates, remark);
-		/*List<BookingProduct> filterDateAndRemarkWiseBookngOrderDetails = this.bookingProductRepository.getFilterDateAndRemarkWiseBookngOrderDetails();
-		return filterDateAndRemarkWiseBookngOrderDetails;*/
-	log.info("Filtering Datas Are : "+filterDateAndRemarkWiseBookngOrderDetails);
+	public Map<String, Object> getFilterDateAndRemarkWiseBookngOrderDetails(String fromdate, String todate,
+			String remark) {
+
+		java.sql.Date fromdates = java.sql.Date.valueOf(fromdate);
+		java.sql.Date toDates = java.sql.Date.valueOf(todate);
+		System.out.println("fromdates" + fromdates);
+		System.out.println("toDates" + toDates);
+		Map<String, Object> filterDateAndRemarkWiseBookngOrderDetails = this.bookingProductDao
+				.getFilterDateAndRemarkWiseBookngOrderDetails(fromdates, toDates, remark);
+		/*
+		 * List<BookingProduct> filterDateAndRemarkWiseBookngOrderDetails =
+		 * this.bookingProductRepository.getFilterDateAndRemarkWiseBookngOrderDetails();
+		 * return filterDateAndRemarkWiseBookngOrderDetails;
+		 */
+		log.info("Filtering Datas Are : " + filterDateAndRemarkWiseBookngOrderDetails);
 		return filterDateAndRemarkWiseBookngOrderDetails;
 	}
 
 	@Override
 	public int totalProducts() {
 		long count = this.bookingProductRepository.count();
-		return (int)count;
+		return (int) count;
 	}
 
-	
 }

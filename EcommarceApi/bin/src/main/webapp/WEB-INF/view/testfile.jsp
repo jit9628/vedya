@@ -277,10 +277,10 @@
 			<div class="mini_footer">
 				<div class="row">
 					<div class="col-md-6">
-						<p>Copyright © 2022 vedakshi jadaun</p>
+						<p>Copyright ï¿½ 2022 Vedya</p>
 					</div>
 					<div class="col-md-6">
-						<p class="text-end">Powered by vedakshi jadaun</p>
+						<p class="text-end">Powered by Vedya</p>
 					</div>
 				</div>
 			</div>

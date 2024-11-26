@@ -50,53 +50,8 @@
     "description": "A description for 'log4j.logger.org.springframework'"
   },
   {
-    "name": "spring.jpa.hibernate.hbm2ddl.auto",
-    "type": "java.lang.String",
-    "description": "A description for 'spring.jpa.hibernate.hbm2ddl.auto'"
-  },
-  {
-    "name": "spring.http.multipart.enabled",
-    "type": "java.lang.String",
-    "description": "A description for 'spring.http.multipart.enabled'"
-  },
-  {
     "name": "endpoints.shutdown.enabled",
     "type": "java.lang.String",
     "description": "A description for 'endpoints.shutdown.enabled'"
-  },
-  {
-    "name": "server.contextPath",
-    "type": "java.lang.String",
-    "description": "A description for 'server.contextPath'"
-  },
-  {
-    "name": "spring.datasource.driver-Class-Name",
-    "type": "java.lang.String",
-    "description": "A description for 'spring.datasource.driver-Class-Name'"
-  },
-  {
-    "name": "EcommarceApi.app.jwtExpirationMs",
-    "type": "java.lang.String",
-    "description": "A description for 'EcommarceApi.app.jwtExpirationMs'"
-  }
-]}{
-    "name": "EcommarceApi.app.jwtSecret",
-    "type": "java.lang.String",
-    "description": "A description for 'EcommarceApi.app.jwtSecret'"
-  }
-]}{
-    "name": "spring.http.multipart.enabled",
-    "type": "java.lang.String",
-    "description": "A description for 'spring.http.multipart.enabled'"
-  }
-]}{
-    "name": "spring.servlet.maltipart.enable",
-    "type": "java.lang.String",
-    "description": "A description for 'spring.servlet.maltipart.enable'"
-  }
-]}{
-    "name": "spring.servlet.maltipart.enable",
-    "type": "java.lang.String",
-    "description": "A description for 'spring.servlet.maltipart.enable'"
   }
 ]}

@@ -1,5 +1,11 @@
+
 $("#cartaddviauser").click(function(){
 		
+		
+		
+		
+		var e = document.getElementById("selectquantity");
+var values = e.value;	
 		var val = $("input[name='size']:checked").val();
 		var color=$("input[name='color8']:checked").val();
 		console.log(color);
@@ -18,8 +24,9 @@ $("#cartaddviauser").click(function(){
 		 var orderimage ="&&orderimage=" + orderimagevalue;
 		 var choosecolor="&&color="+color;
 		var href = $('form').attr('action');
-		var finalurl = href + size + orderimage + choosecolor;
-		//alert(finalurl);
+		var qty="&&qty=" + values;
+		var finalurl = href + size + qty + orderimage + choosecolor;
+		alert(finalurl);
 		/*start Ajax Block*/
 		$.ajax({
 				url: finalurl,

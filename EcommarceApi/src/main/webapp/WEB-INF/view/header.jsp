@@ -24,10 +24,10 @@
 						aria-controls="offcanvasNavbar">
 						<span class="navbar-toggler-icon"></span>
 					</button>
-					<a class="navbar-brand logo" href="/api/page/index"> <img
-						src="${pageContext.request.contextPath}/resources/images/logo.png"
-						alt="img">
-					</a>
+					<!--<a class="navbar-brand logo" href="/api/page/index"> <img
+						src="${pageContext.request.contextPath}/resources/images/logo(3).png"
+						alt="img" style="height>
+					</a>-->
 
 					<%
 					if (request.getSession().getAttribute("userid") == null || request.getSession().getAttribute("userid") == "") {
